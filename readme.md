@@ -93,3 +93,148 @@ git push --force
 To update on gitHub
 
 ## Setting up Gulp within your project
+
+Type the two following commands to install Gulp and Gulp Util in your project directory
+
+```
+npm install –save-dev gulp
+npm install –save-dev gulp-util
+```
+_Notice how the package.json file was edited_
+
+We need to create a gulpfile.js to tell it what we want it to do. In the gulpfile.js type
+
+```
+var gulp = require('gulp');
+var gutil = require('gulp-util');
+
+gulp.task('log', function () {
+    gutil.log('Workflows are awesome');
+});
+```
+
+Then type gulp log in the command line to see if it is working
+Now follow commands to commit and push the changes to GIThub
+
+## Setting up Gulp to process Coffee Script
+
+Ok so lets do some processing of the coffee script. We need Gulp-coffee so lets install that
+```
+npm install -save-dev gulp-coffee
+```
+
+Add this to gulpfile.js and test
+
+```
+Var coffee = require('gulp-coffee')
+var coffeeSources = ['components/coffee/tagline.coffee'];
+gulp.task('coffee', function () {
+    gulp.src(coffeeSources)
+        .pipe(coffee({
+                bare: true
+            })
+            .on('error', gutil.log))
+        .pipe(gulp.dest('components/scripts'))
+});
+```
+
+## Setting up Gulp Concat
+
+Install Gulp concat to use this utility
+
+```
+Npm install –save-dev gulp-concat
+```
+
+Add this to gulpfile.js
+
+```
+Var concat = require('gulp-concat')
+var jsSources = ['components/scripts/rclick.js', 'components/scripts/pixgrid.js', 'components/scripts/tagline.js', 'components/scripts/template.js'
+];
+gulp.task('js', function () {
+    gulp.src(jsSources)
+        .pipe(concat('script.js'))
+        .pipe(gulp.dest('builds/development/js'))
+});
+```
+
+## Install Browserify
+Now we need to install browserify which allows us to install our libraries as dependendcies
+```
+Npm install –save-dev gulp-browserify
+```
+
+Now install the jquery library and Mustache
+```
+Npm install –save-dev jquery
+Npm install –save-dev mustache
+```
+
+Now Add the following to gulpfile.js
+
+```
+Var browserify = require('gulp-browserify')
+
+And edit the gulp JS task to the following
+gulp.task('js', function () {
+    gulp.src(jsSources)
+        .pipe(concat('script.js'))
+        .pipe(browserify())
+        .pipe(gulp.dest('builds/development/js'))
+});
+```
+Anywhere within the jsSources that has a require browserify will implement the required script
+
+In the tagline.coffee file add the following line
+
+```
+$ = require 'jquery' on the top
+```
+Then test with gulp coffee and then gulp js.
+
+## Installing and working with Sass file
+
+Install gulp compass using
+```
+Npm install –save-dev gulp-compass
+```
+And add it to the gulpfile.js
+
+```
+Var compass = require('gulp-compass')
+```
+
+Add a variable for sass sources using the following
+```
+var sassSources = ['components/sass/style.scss'];
+```
+Remember sass has it own import command so we don’t need to add all sources
+
+```
+gulp.task('compass', function () {
+    return gulp.src(sassSources)
+        .pipe(compass({
+            css: 'builds/development/css',
+            sass: 'components/sass',
+            image: 'builds/development/images',
+            comments: 'true',
+            style: 'expanded'
+        }))
+        .on('error', gutil.log)
+
+    .pipe(gulp.dest('builds/development/css'));
+
+});
+```
+## Issue task Sequences
+if you want a task to run but you need another task to run before it then use the example below
+```
+gulp.task('js', ['coffee'] function () {
+    gulp.src(jsSources)
+        .pipe(concat('script.js'))
+        .pipe(browserify())
+        .pipe(gulp.dest('builds/development/js'))
+});
+```
+We dont need this in our project so make sure to revert to original
