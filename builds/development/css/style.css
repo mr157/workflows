@@ -1,7 +1,7 @@
 @import "http://fonts.googleapis.com/css?family=Patua+One|Inika";
 /* line 3, ../../../components/sass/_base.scss */
 body {
-  background: #eddbba;
+  background: #ff3333;
   font-family: "Inika", serif;
   font-size: 1.1em;
 }
@@ -109,7 +109,7 @@ section {
 /* line 15, ../../../components/sass/_modules.scss */
 .featuredartists {
   background: #8D8862;
-  border-top: 20px solid #E3C691;
+  border-top: 20px solid red;
   border-bottom: 50px solid #507356;
 }
 /* line 20, ../../../components/sass/_modules.scss */
@@ -127,7 +127,7 @@ section {
 .featuredartists h2 {
   margin-top: 20px;
   font-size: 1.8em;
-  color: #dbb570;
+  color: #d60000;
 }
 @media (max-width: 700px) {
   /* line 28, ../../../components/sass/_modules.scss */
@@ -147,7 +147,7 @@ section {
 .featuredartists .artistlist h2 {
   margin-top: 5px;
   font-size: 1.2em;
-  color: #ebd7b2;
+  color: #ff2929;
 }
 /* line 50, ../../../components/sass/_modules.scss */
 .featuredartists .artistlist .item {
