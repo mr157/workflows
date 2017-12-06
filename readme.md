@@ -252,9 +252,16 @@ gulp.task('default',['coffee','js','compass']);
 To add a watch task we get it to keep an eye on our coffeeSources (which is an array of files) and if any of those files get changed or updated we instruct it to execute the coffee task
 ```
 gulp.task('watch', function () {
-    gulp.watch(coffeSources, ['coffee'])
+    gulp.watch(coffeeSources, ['coffee'])
 });
 ```
-
+_When you issue the gulp watch task notice how the task does not complete and return you to the terminal. Change the tagline.coffee file and notice how it changes the tagline.js file in scripts. It doesnt change to outputted script in the development js folder we need to also add a watch to the js folder._
+```
+gulp.task('watch', function () {
+    gulp.watch(coffeeSources, ['coffee']);
+    gulp.watch(jsSources,['js'])
+});
+```
+_To terminate the watch function in the terminal window press ctrl C and run the gulp watch command again_
 
 
