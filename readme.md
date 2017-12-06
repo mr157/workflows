@@ -246,7 +246,15 @@ gulp.task('all',['coffee','js','compass']);
 
 We should name this task as default and when we type gulp in the terminal window it will run the default task
 ```
-gulp.task('all',['coffee','js','compass']);
+gulp.task('default',['coffee','js','compass']);
 ```
+
+To add a watch task we get it to keep an eye on our coffeeSources (which is an array of files) and if any of those files get changed or updated we instruct it to execute the coffee task
+```
+gulp.task('watch', function () {
+    gulp.watch(coffeSources, ['coffee'])
+});
+```
+
 
 
