@@ -238,3 +238,15 @@ gulp.task('js', ['coffee'] function () {
 });
 ```
 We dont need this in our project so make sure to revert to original
+
+To run tasks in Sequence you can create a new task and pass it the information of the task sequence
+```
+gulp.task('all',['coffee','js','compass']);
+```
+
+We should name this task as default and when we type gulp in the terminal window it will run the default task
+```
+gulp.task('all',['coffee','js','compass']);
+```
+
+
