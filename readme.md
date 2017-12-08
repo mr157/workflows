@@ -104,7 +104,7 @@ _Notice how the package.json file was edited_
 
 We need to create a gulpfile.js to tell it what we want it to do. In the gulpfile.js type
 
-```
+```js
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 
@@ -125,7 +125,7 @@ npm install -save-dev gulp-coffee
 
 Add this to gulpfile.js and test
 
-```
+```js
 Var coffee = require('gulp-coffee')
 var coffeeSources = ['components/coffee/tagline.coffee'];
 gulp.task('coffee', function () {
@@ -148,7 +148,7 @@ Npm install –save-dev gulp-concat
 
 Add this to gulpfile.js
 
-```
+```js
 Var concat = require('gulp-concat')
 var jsSources = ['components/scripts/rclick.js', 'components/scripts/pixgrid.js', 'components/scripts/tagline.js', 'components/scripts/template.js'
 ];
@@ -173,7 +173,7 @@ Npm install –save-dev mustache
 
 Now Add the following to gulpfile.js
 
-```
+```js
 Var browserify = require('gulp-browserify')
 
 And edit the gulp JS task to the following
@@ -188,7 +188,7 @@ Anywhere within the jsSources that has a require browserify will implement the r
 
 In the tagline.coffee file add the following line
 
-```
+```js
 $ = require 'jquery' on the top
 ```
 Then test with gulp coffee and then gulp js.
@@ -201,17 +201,17 @@ Npm install –save-dev gulp-compass
 ```
 And add it to the gulpfile.js
 
-```
+```js
 Var compass = require('gulp-compass')
 ```
 
 Add a variable for sass sources using the following
-```
+```js
 var sassSources = ['components/sass/style.scss'];
 ```
 Remember sass has it own import command so we don’t need to add all sources
 
-```
+```js
 gulp.task('compass', function () {
     return gulp.src(sassSources)
         .pipe(compass({
@@ -227,9 +227,9 @@ gulp.task('compass', function () {
 
 });
 ```
-## Issue task Sequences
+## Issue task and watch Sequences
 if you want a task to run but you need another task to run before it then use the example below
-```
+```js
 gulp.task('js', ['coffee'] function () {
     gulp.src(jsSources)
         .pipe(concat('script.js'))
@@ -240,28 +240,29 @@ gulp.task('js', ['coffee'] function () {
 We dont need this in our project so make sure to revert to original
 
 To run tasks in Sequence you can create a new task and pass it the information of the task sequence
-```
+```js
 gulp.task('all',['coffee','js','compass']);
 ```
 
 We should name this task as default and when we type gulp in the terminal window it will run the default task
-```
+```js
 gulp.task('default',['coffee','js','compass']);
 ```
 
 To add a watch task we get it to keep an eye on our coffeeSources (which is an array of files) and if any of those files get changed or updated we instruct it to execute the coffee task
-```
+```js
 gulp.task('watch', function () {
     gulp.watch(coffeeSources, ['coffee'])
 });
 ```
 _When you issue the gulp watch task notice how the task does not complete and return you to the terminal. Change the tagline.coffee file and notice how it changes the tagline.js file in scripts. It doesnt change to outputted script in the development js folder we need to also add a watch to the js folder._
-```
+```js
 gulp.task('watch', function () {
     gulp.watch(coffeeSources, ['coffee']);
     gulp.watch(jsSources,['js'])
 });
 ```
-_To terminate the watch function in the terminal window press ctrl C and run the gulp watch command again_
+_To terminate the watch function in the terminal window press `ctrl C` and run the gulp watch command again_
 
+To terminate the watch function in the terminal window press `ctrl C` and run the gulp watch command again
 
