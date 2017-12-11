@@ -347,6 +347,16 @@ Now entry this address into your address bar in Chrome and test.
 ```
 http://localhost:8080/
 ```
+You Could also write a gulp-connect stopping task as follows
+```js
+gulp.task('jenkins-tests', function() {
+  connect.server({
+    port: 8888
+  });
+
+  connect.serverClose();
+});
+``
 
 Add the follwoing to your style.scss under the compass import and notice how the page margins are reset in the live server.
 ```
@@ -471,6 +481,39 @@ gulp.task('compass', function () {
         .pipe(gulp.dest(outputDir + 'css'))
         .pipe(connect.reload());
 });```
+
+## Adding Gulp If - Conditional Variables
+Gulp If allows you to put conditional statements within the gulp piped flow. Firstly lets install it
+```
+npm install --save-dev gulp-if
+```
+Add it to the list of requires at the top of the gulpfile.js
+```js
+gulpIf = require('gulp-if');
+```
+Now lets try to Uglify our Javascript using the gulp-uglify plugin. Firstly lets install it
+```js
+gulpif = require('gulp-uglify');
+```
+Add it to the list of requires at the top of the gulpfile.js
+```js
+uglify = require('gulp-uglify');
+```
+Now add the condition in stream to the js task
+```js
+gulp.task('js', function () {
+    gulp.src(jsSources)
+        .pipe(concat('script.js'))
+        .pipe(browserify())
+        .pipe(gulpIf(env === 'production', uglify()))
+        .pipe(gulp.dest(outputDir + '/js'))
+        .pipe(connect.reload())
+});
+```
+Run NODE_ENV=production gulp from the Command line and test
+```js
+NODE_ENV=production gulp
+```
 
 ## Installing Image Resize
 This package requires that you have imageMagick and graphicsmagick installed using Brew. See above. Type the follwoing into the terminal window

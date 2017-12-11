@@ -4,7 +4,10 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     browserify = require('gulp-browserify'),
     compass = require('gulp-compass'),
-    connect = require('gulp-connect');
+    connect = require('gulp-connect'),
+    gulpIf = require('gulp-if'),
+    uglify = require('gulp-uglify');
+
 var imageResize = require('gulp-image-resize');
 
 var env,
@@ -16,7 +19,7 @@ var env,
     outputDir,
     sassStyle;
 
-env = process.env.NODE_ENV || 'production';
+env = process.env.NODE_ENV || 'development';
 
 if (env === 'development') {
     outputDir = 'builds/development/';
@@ -56,6 +59,7 @@ gulp.task('js', function () {
     gulp.src(jsSources)
         .pipe(concat('script.js'))
         .pipe(browserify())
+        .pipe(gulpIf(env === 'production', uglify()))
         .pipe(gulp.dest(outputDir + '/js'))
         .pipe(connect.reload())
 });
@@ -98,6 +102,15 @@ gulp.task('connect', function () {
         livereload: true
     });
 })
+
+gulp.task('stopServer', function () {
+    connect.server({
+        port: 8888
+    });
+    // run some headless tests with phantomjs 
+    // when process exits: 
+    connect.serverClose();
+});
 
 gulp.task('default', ['html', 'json', 'coffee', 'js', 'compass', 'connect', 'watch']);
 
