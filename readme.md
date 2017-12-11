@@ -294,7 +294,64 @@ You should also add the watch task to the end of the default task so when the pr
 ```js
 gulp.task('default', ['coffee', 'js', 'compass','watch']);
 ```
+## Adding LiveReload and Live Server
+This package allows you to run a live server and also have live preview. Firstly install gulp connect.
+```
+npm install --save-dev gulp-connect
+```
+Add this to your gulpfile.js
+```js
+var connect = require('gulp-connect')
+```
 
+Add the follwoing task function to your gulpfile.js
+```js
+gulp.task('connect', function () {
+    connect.server({
+        root: 'builds/development/',
+        livereload: true
+    });
+})
+```
+Also add this task to the default task
+```js
+gulp.task('default', ['coffee', 'js', 'compass', 'connect','watch']);
+```
+
+Now add .pipe(connect.reload()) to end of your js task and your compass task. There is no need to add it to the coffee script task and this generate a js file which will in turn connect.reload
+```js
+gulp.task('js', function () {
+    gulp.src(jsSources)
+        .pipe(concat('script.js'))
+        .pipe(browserify())
+        .pipe(gulp.dest('builds/development/js'))
+        .pipe(connect.reload())
+});
+```
+```js
+gulp.task('compass', function () {
+    return gulp.src(sassSources)
+        .pipe(compass({
+            css: 'builds/development/css',
+            sass: 'components/sass',
+            image: 'builds/development/images',
+            comments: 'true',
+            style: 'expanded'
+        }))
+        .on('error', gutil.log)
+        .pipe(gulp.dest('builds/development/css'))
+        .pipe(connect.reload());
+});
+```
+Now entry this address into your address bar in Chrome and test.
+```
+http://localhost:8080/
+```
+
+Add the follwoing to your style.scss under the compass import and notice how the page margins are reset in the live server.
+```
+@import "compass/reset";
+```
 
 ## Installing Image Resize
 This package requires that you have imageMagick and graphicsmagick installed using Brew. See above. Type the follwoing into the terminal window
