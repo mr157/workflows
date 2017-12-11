@@ -290,6 +290,11 @@ No lets add the gulp watch task to look at sass changes.Remember the variable sa
 ```js
 gulp.watch('components/sass/*.scss', ['compass']);
 ```
+You should also add the watch task to the end of the default task so when the project starts the watch command will be executed.
+```js
+gulp.task('default', ['coffee', 'js', 'compass','watch']);
+```
+
 
 ## Installing Image Resize
 This package requires that you have imageMagick and graphicsmagick installed using Brew. See above. Type the follwoing into the terminal window
