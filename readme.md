@@ -393,6 +393,85 @@ gulp.watch('builds/development/js/*.json', ['json'])
 ```
 Now edit your .json file and save. Watch it reload with new content.
 
+## Setting up Environment Variables
+
+We start by setting up an environment variable. This is added at the top of the gulpfile.js. This ets up the ENV variable if it hasnt been set through the terminal window. We will change it through the terminal window later.
+```js
+var env = process.env.NODE_ENV || 'development';
+```
+Set up your variable in the gulpfile.js so that your declarations and assignments are seperated.
+```js
+var env,
+    coffeeSources,
+    jsSources,
+    sassSources,
+    htmlSources,
+    jsonSources,
+    outputDir;
+
+env = process.env.NODE_ENV || 'development';
+coffeeSources = ['components/coffee/tagline.coffee'];
+jsSources = [
+    'components/scripts/rclick.js',
+    'components/scripts/pixgrid.js',
+    'components/scripts/tagline.js',
+    'components/scripts/template.js'
+];
+sassSources = ['components/sass/style.scss'];
+htmlSources = ['builds/development/*.html'];
+jsonSources = ['builds/development/js/*.json'];
+
+```
+Now add a conditional statement after the env declaration
+```js
+if (env === 'development') {
+    outputDir = 'builds/development/';
+}
+else {
+    outputDir = 'builds/production/'
+}
+```
+Now where every you used 'builds/development' within your gulpfile.js you need to replace it 'outputDir'. For example
+```js
+htmlSources = [outputDir + '*.html'];
+```
+Now to change the environment variable to production we type the following into the terminal window and execute the gulp command after it. Watch for the spaces!!!
+```
+NODE_ENV=production gulp
+```
+Add sassStyle to the variable list and then add this conditional statement
+```js
+outputDir,
+sassStyle;
+```
+
+```js
+if (env === 'development') {
+    outputDir = 'builds/development/';
+    sassStyle = 'expanded'
+}
+else {
+    gutil.log('Workflows are yawesome');
+    outputDir = 'builds/production/';
+    sassStyle = 'compressed'
+}
+```
+Now edit the compass style to use that variable
+```js
+gulp.task('compass', function () {
+    return gulp.src(sassSources)
+        .pipe(compass({
+            css: outputDir + 'css',
+            sass: 'components/sass',
+            image: outputDir + 'images',
+            comments: 'true',
+            style: sassStyle
+        }))
+        .on('error', gutil.log)
+        .pipe(gulp.dest(outputDir + 'css'))
+        .pipe(connect.reload());
+});```
+
 ## Installing Image Resize
 This package requires that you have imageMagick and graphicsmagick installed using Brew. See above. Type the follwoing into the terminal window
 ```
