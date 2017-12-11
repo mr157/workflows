@@ -353,6 +353,46 @@ Add the follwoing to your style.scss under the compass import and notice how the
 @import "compass/reset";
 ```
 
+## Adding Static Reloads for .html & .json files
+Fitstly create a variable for the HTML sources
+```js
+var htmlSources = ['builds/development/*.html ']
+```
+Then create a task for html in the gulpfile.js
+```js
+gulp.task('html', function () {
+    gulp.src(htmlSources)
+        .pipe(connect.reload())
+});
+```
+Add it to the default task and the watch task
+```js
+gulp.task('default', ['html', 'coffee', 'js', 'compass', 'connect', 'watch']);
+```
+```js
+gulp.task('watch', function () {
+    gulp.watch(coffeeSources, ['coffee']);
+    gulp.watch(jsSources, ['js']);
+    gulp.watch('components/sass/*.scss', ['compass']);
+    gulp.watch(htmlSources, ['html'])
+});
+```
+We need to also install a task to watch for changes in the json file.
+```js
+gulp.task('json',function(){
+    gulp.src('builds/development/js/*.json')
+    .pipe(connect.reload())
+})
+```
+Add it to our default task and our watch task
+```js
+gulp.task('default', ['html', 'json', 'coffee', 'js', 'compass', 'connect', 'watch']);
+```
+```js
+gulp.watch('builds/development/js/*.json', ['json'])
+```
+Now edit your .json file and save. Watch it reload with new content.
+
 ## Installing Image Resize
 This package requires that you have imageMagick and graphicsmagick installed using Brew. See above. Type the follwoing into the terminal window
 ```
