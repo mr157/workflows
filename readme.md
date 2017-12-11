@@ -349,7 +349,7 @@ http://localhost:8080/
 ```
 You Could also write a gulp-connect stopping task as follows
 ```js
-gulp.task('jenkins-tests', function() {
+gulp.task('stopServer', function() {
   connect.server({
     port: 8888
   });
@@ -480,7 +480,8 @@ gulp.task('compass', function () {
         .on('error', gutil.log)
         .pipe(gulp.dest(outputDir + 'css'))
         .pipe(connect.reload());
-});```
+});
+```
 
 ## Adding Gulp If - Conditional Variables
 Gulp If allows you to put conditional statements within the gulp piped flow. Firstly lets install it
@@ -516,7 +517,7 @@ NODE_ENV=production gulp
 ```
 
 ## Installing Image Resize
-This package requires that you have imageMagick and graphicsmagick installed using Brew. See above. Type the follwoing into the terminal window
+This package requires that you have imageMagick and graphicsmagick installed using Brew. See above. Type the following into the terminal window
 ```
 npm install --save-dev gulp-image-resize
 ```
