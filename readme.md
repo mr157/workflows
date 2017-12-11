@@ -286,6 +286,11 @@ gulp.task('watch', function () {
 ```
 _To terminate the watch function in the terminal window press `ctrl C` and run the gulp watch command again_
 
+No lets add the gulp watch task to look at sass changes.Remember the variable sassSources only refers to the style.scss file so we need to tell it to watch all of the files in the sass folder. We do this by adding the following
+```js
+gulp.watch('components/sass/*.scss', ['compass']);
+```
+
 ## Installing Image Resize
 This package requires that you have imageMagick and graphicsmagick installed using Brew. See above. Type the follwoing into the terminal window
 ```
