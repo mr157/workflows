@@ -8,7 +8,7 @@ _Note:To Show Hidden files in Finder on Mac use the follwoing command in the ter
 ```
 defaults write com.apple.finder AppleShowAllFiles YES
 ```
-### Install GIT
+### Install GIT on your System
 ```
 git –version to check if installed
 ```
@@ -16,8 +16,29 @@ git –version to check if installed
 ```
 Node (node –v to check if installed)
 ```
+### Install Brew
+This package lets you install packages directly to your mac os
+```
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+```
+### Install Imagemagick and GraphicsMagick using Brew
 
-### Other Installs
+I went to Apple Developer website and downloaded the Command Line Tools dmg directly because I was getting an error with the following commands. The Command Line Tools can be found under -
+https://developer.apple.com/download/more/
+
+```
+brew install imagemagick
+brew install graphicsmagick
+```
+On Windows you could use Scoop instead of Brew 
+```
+scoop install sudo (In case you haven't got it already)
+sudo scoop install imagemagick -g
+```
+
+
+## Other Global Installs
+Install these to get started if starting from fresh. If you are downloading this folder
 ```
 GULP - Npm install –g gulp
 BROWSERIFY - Npm install –g browserify
@@ -27,12 +48,12 @@ RUBY - Install ruby if on PC
 ```
 _Also create Github account and keep your details_
 
-## Create folder structure for Project
-*Ls* to list current files in folder (ls –a to show hidden files)
+## Create folder structure and Files for Project
+`Ls` to list current files in folder (ls –a to show hidden files)
 
-*Cd* to change directory
+`Cd` to change directory
 
-*Clear* to clear screen
+`Clear` to clear screen
 
 ```
 - workflows
@@ -74,6 +95,7 @@ git status
 git commit -m "First Commit"
 git log
 ```
+To exit out of your git log press 'q' to quit
 
 Now to push your files to the online repository
 ```
@@ -113,10 +135,10 @@ gulp.task('log', function () {
 });
 ```
 
-Then type gulp log in the command line to see if it is working
+Then type `gulp log` in the command line to see if it is working
 Now follow commands to commit and push the changes to GIThub
 
-## Setting up Gulp to process Coffee Script
+### Setting up Gulp to process Coffee Script
 
 Ok so lets do some processing of the coffee script. We need Gulp-coffee so lets install that
 ```
@@ -138,7 +160,7 @@ gulp.task('coffee', function () {
 });
 ```
 
-## Setting up Gulp Concat
+### Setting up Gulp Concat
 
 Install Gulp concat to use this utility
 
@@ -159,7 +181,7 @@ gulp.task('js', function () {
 });
 ```
 
-## Install Browserify
+### Install Browserify
 Now we need to install browserify which allows us to install our libraries as dependendcies
 ```
 Npm install –save-dev gulp-browserify
@@ -264,5 +286,26 @@ gulp.task('watch', function () {
 ```
 _To terminate the watch function in the terminal window press `ctrl C` and run the gulp watch command again_
 
-To terminate the watch function in the terminal window press `ctrl C` and run the gulp watch command again
-
+## Installing Image Resize
+This package requires that you have imageMagick and graphicsmagick installed using Brew. See above. Type the follwoing into the terminal window
+```
+npm install --save-dev gulp-image-resize
+```
+Add the following to your gulpfile.js header
+```js
+var imageResize = require('gulp-image-resize');
+```
+And also add the following into your gulpfile.js
+```js
+gulp.task('image', function () {
+  gulp.src('test.png')
+    .pipe(imageResize({
+      width : 100,
+      height : 100,
+      crop : true,
+      upscale : false
+    }))
+    .pipe(gulp.dest('dist'));
+});
+```
+Place image in folder and define destination and then test

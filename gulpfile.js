@@ -4,6 +4,7 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     browserify = require('gulp-browserify'),
     compass = require('gulp-compass');
+var imageResize = require('gulp-image-resize');
 
 var coffeeSources = ['components/coffee/tagline.coffee'];
 var jsSources = ['components/scripts/rclick.js',
@@ -54,3 +55,14 @@ gulp.task('watch', function () {
 });
 
 gulp.task('default', ['coffee', 'js', 'compass']);
+
+gulp.task('image', function () {
+    gulp.src('test.png')
+        .pipe(imageResize({
+            width: 100,
+            height: 100,
+            crop: true,
+            upscale: false
+        }))
+        .pipe(gulp.dest('builds'));
+});
