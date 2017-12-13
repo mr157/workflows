@@ -7,6 +7,7 @@ var gulp = require('gulp'),
     connect = require('gulp-connect'),
     gulpIf = require('gulp-if'),
     minifyHTML = require('gulp-minify-html'),
+    jsonMinify = require('gulp-jsonminify'),
     uglify = require('gulp-uglify');
 
 var imageResize = require('gulp-image-resize');
@@ -84,7 +85,7 @@ gulp.task('watch', function () {
     gulp.watch(jsSources, ['js']);
     gulp.watch('components/sass/*.scss', ['compass']);
     gulp.watch('builds/development/*.html', ['html']);
-    gulp.watch(outputDir + 'js/*.json', ['json'])
+    gulp.watch('builds/development/js/*.json', ['json'])
 });
 
 gulp.task('html', function () {
@@ -95,9 +96,11 @@ gulp.task('html', function () {
 });
 
 gulp.task('json', function () {
-    gulp.src(jsonSources)
+    gulp.src('builds/development/js/*.json')
+        .pipe(gulpIf(env === 'production', jsonMinify()))
+        .pipe(gulpIf(env === 'production', gulp.dest('builds/production/js')))
         .pipe(connect.reload())
-})
+});
 
 gulp.task('connect', function () {
     connect.server({

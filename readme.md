@@ -544,6 +544,35 @@ gulp.task('watch', function () {
     gulp.watch(outputDir + 'js/*.json', ['json'])
 });
 ```
+
+## Copying and minfying our Json file from Development to Production
+Firstly install the gulp-jsonminify plugin
+```
+npm install --save-dev gulp-jsonminify
+```
+We also need to add a require at the top of the document
+```js
+jsonMinify =require('gulp-jsonminify')
+```
+Edit the json task to the following
+```js
+gulp.task('json', function () {
+    gulp.src('builds/development/js/*.json')
+        .pipe(gulpIf(env === 'production', jsonMinify()))
+        .pipe(gulpIf(env === 'production', gulp.dest('builds/production/js')))
+        .pipe(connect.reload())
+});
+```
+We need to modify the watch task also by changing the json to watch the json in the development folder only 
+```js
+gulp.task('watch', function () {
+    gulp.watch(coffeeSources, ['coffee']);
+    gulp.watch(jsSources, ['js']);
+    gulp.watch('components/sass/*.scss', ['compass']);
+    gulp.watch('builds/development/*.html', ['html']);
+    gulp.watch('builds/development/js/*.json', ['json'])
+});
+```
 ## Installing Image Resize
 This package requires that you have imageMagick and graphicsmagick installed using Brew. See above. Type the following into the terminal window
 ```
