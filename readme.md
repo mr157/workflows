@@ -602,9 +602,18 @@ gulp.task('images', function () {
 ```
 We need to edit out default to taks to add the images task to it
 ```js
+gulp.task('default', ['html', 'json', 'coffee', 'js', 'compass', 'images', 'connect', 'watch']);
 ```
 We need to edit our watch task to look out for image changes
 ```js
+gulp.task('watch', function () {
+    gulp.watch(coffeeSources, ['coffee']);
+    gulp.watch(jsSources, ['js']);
+    gulp.watch('components/sass/*.scss', ['compass']);
+    gulp.watch('builds/development/*.html', ['html']);
+    gulp.watch('builds/development/js/*.json', ['json'])
+    gulp.watch('builds/development/images/**/*.*', ['images'])
+});
 ```
 
 ## Installing Image Resize

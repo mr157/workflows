@@ -10,7 +10,8 @@ var gulp = require('gulp'),
     jsonMinify = require('gulp-jsonminify'),
     imageMin = require('gulp-imagemin'),
     pngCrush = require('imagemin-pngcrush'),
-    uglify = require('gulp-uglify');
+    uglify = require('gulp-uglify'),
+    ftp = require('vinyl-ftp');
 
 var imageResize = require('gulp-image-resize');
 
@@ -132,6 +133,36 @@ gulp.task('stopServer', function () {
     // run some headless tests with phantomjs 
     // when process exits: 
     connect.serverClose();
+});
+
+gulp.task('deploy', function () {
+
+    var conn = ftp.create({
+        host: 'ftp1.reg365.net.',
+        user: 'montimedia.ie',
+        password: '*******',
+        parallel: 10,
+        log: gutil.log
+    });
+
+    var globs = [
+
+		'builds/development/css/**',
+		'builds/development/js/**',
+		//'builds/development/images/**',
+		'builds/development/index.html'
+	];
+
+    // using base = '.' will transfer everything to /public_html correctly
+    // turn off buffering in gulp.src for best performance
+
+    return gulp.src(globs, {
+            base: 'builds/development/',
+            buffer: false
+        })
+        .pipe(conn.newer('/web/homesite/')) // only upload newer files
+        .pipe(conn.dest('/web/homesite/'));
+
 });
 
 gulp.task('default', ['html', 'json', 'coffee', 'js', 'compass', 'images', 'connect', 'watch']);
