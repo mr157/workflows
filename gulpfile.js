@@ -6,6 +6,7 @@ var gulp = require('gulp'),
     compass = require('gulp-compass'),
     connect = require('gulp-connect'),
     gulpIf = require('gulp-if'),
+    minifyHTML = require('gulp-minify-html'),
     uglify = require('gulp-uglify');
 
 var imageResize = require('gulp-image-resize');
@@ -82,12 +83,14 @@ gulp.task('watch', function () {
     gulp.watch(coffeeSources, ['coffee']);
     gulp.watch(jsSources, ['js']);
     gulp.watch('components/sass/*.scss', ['compass']);
-    gulp.watch(htmlSources, ['html']);
+    gulp.watch('builds/development/*.html', ['html']);
     gulp.watch(outputDir + 'js/*.json', ['json'])
 });
 
 gulp.task('html', function () {
-    gulp.src(htmlSources)
+    gulp.src('builds/development/*.html')
+        .pipe(gulpIf(env === 'production', minifyHTML()))
+        .pipe(gulpIf(env === 'production', gulp.dest(outputDir)))
         .pipe(connect.reload())
 });
 

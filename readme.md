@@ -516,6 +516,34 @@ Run NODE_ENV=production gulp from the Command line and test
 NODE_ENV=production gulp
 ```
 
+## Copying and minifying HTML from Development to Production
+We need to use gulp-minify-html. Install this
+```
+npm install --save-dev gulp-minify-html
+```
+In the gulpfile.js add a require to the top of the document for this plugin
+```js
+minifyHTML =require('gulp-minify-html')
+```
+In the HTML task add the following code. Make sure to change the gulp.src value as we will only by watching and changing the one html file taht sits in the development folder
+```js
+gulp.task('html', function () {
+    gulp.src('builds/development/*.html')
+        .pipe(gulpIf(env === 'production', minifyHTML()))
+        .pipe(gulpIf(env === 'production', gulp.dest(outputDir)))
+        .pipe(connect.reload())
+});
+```
+We need to modify the watch task also by changing the htmlSources to watch the html in the development folder only 
+```js
+gulp.task('watch', function () {
+    gulp.watch(coffeeSources, ['coffee']);
+    gulp.watch(jsSources, ['js']);
+    gulp.watch('components/sass/*.scss', ['compass']);
+    gulp.watch('builds/development/*.html', ['html']);
+    gulp.watch(outputDir + 'js/*.json', ['json'])
+});
+```
 ## Installing Image Resize
 This package requires that you have imageMagick and graphicsmagick installed using Brew. See above. Type the following into the terminal window
 ```
