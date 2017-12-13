@@ -573,6 +573,40 @@ gulp.task('watch', function () {
     gulp.watch('builds/development/js/*.json', ['json'])
 });
 ```
+
+## Compressing Images
+We need to use 2 plugins for this part. We install gulp-imagemin and add imagemin-pngcrush to our requires
+```
+npm install --save-dev gulp-imagemin
+npm install --save-dev imagemin-pngcrush
+```
+We also as before need to add these plugins to the require
+```js
+imageMin = require('gulp-imagemin'),
+pngCrush = require('imagemin-pngcrush'),
+```
+We now need to create an images task
+```js
+gulp.task('images', function () {
+    gulp.src('builds/development/**/*.*')
+        .pipe(gulpIf(env === 'production', imageMin({
+            progressive: true,
+            scgoPlugins: [{
+                removeViewBox: false
+            }],
+            use: [pngCrush()]
+        })))
+        .pipe(gulpIf(env === 'production', gulp.dest(outputDir + 'images')))
+        .pipe(connect.reload())
+})
+```
+We need to edit out default to taks to add the images task to it
+```js
+```
+We need to edit our watch task to look out for image changes
+```js
+```
+
 ## Installing Image Resize
 This package requires that you have imageMagick and graphicsmagick installed using Brew. See above. Type the following into the terminal window
 ```
