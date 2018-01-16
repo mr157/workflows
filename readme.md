@@ -1,6 +1,6 @@
 # Workflows Project
 
-This is a workflow test project
+This is a workflow test project More
 
 ## Some setup tips
 
